@@ -66,13 +66,9 @@
     <script>
         // Thay bằng ID của bạn nếu cần
         const MY_AFF_ID = "17346750068"; 
-        
-        // Bạn có thể thêm Sub ID vào đây nếu muốn tracking hiệu quả từng kênh (Ví dụ: "FB_Group_A")
-        // Nếu không dùng, để trống: const SUB_ID = "";
-        const SUB_ID = ""; 
 
         function generateLink() {
-            const input = document.getElementById('originLink').value.trim();
+            let input = document.getElementById('originLink').value.trim();
             const resultBox = document.getElementById('result-box');
             const affLinkSpan = document.getElementById('aff-link');
 
@@ -81,17 +77,19 @@
                 return;
             }
 
-            // Mã hóa URL gốc để tránh lỗi ký tự đặc biệt
-            const encodedUrl = encodeURIComponent(input);
-            
-            // Xây dựng link Affiliate với share_channel_code=4 (Facebook)
-            let finalLink = `https://s.shopee.vn/an_redir?origin_link=${encodedUrl}&share_channel_code=4&affiliate_id=${MY_AFF_ID}`;
-            
-            // Nếu có khai báo SUB_ID, nối thêm vào link
-            if (SUB_ID !== "") {
-                finalLink += `&sub_id=${SUB_ID}`;
+            // 1. Tự động kiểm tra và bơm UTM Facebook vào link gốc
+            // Dùng dấu "?" nếu link chưa có tham số nào, dùng dấu "&" nếu link đã có tham số
+            if (!input.includes('utm_source=')) {
+                const separator = input.includes('?') ? '&' : '?';
+                input = `${input}${separator}utm_source=facebook&utm_medium=affiliates`;
             }
 
+            // 2. Mã hóa URL gốc (lúc này đã chứa sẵn UTM Facebook)
+            const encodedUrl = encodeURIComponent(input);
+            
+            // 3. Xây dựng link Affiliate cuối cùng (Giữ share_channel_code=4 và bỏ sub_id)
+            const finalLink = `https://s.shopee.vn/an_redir?origin_link=${encodedUrl}&share_channel_code=4&affiliate_id=${MY_AFF_ID}`;
+            
             // Hiển thị kết quả
             affLinkSpan.innerText = finalLink;
             resultBox.style.display = 'block';
