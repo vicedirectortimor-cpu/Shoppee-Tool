@@ -34,7 +34,7 @@
 
     <div class="header">
         <h1>🔗 Tạo Link Shopee</h1>
-        <div style="font-size: 14px; color: #888;">nghiensale.shope.cc</div>
+        <div style="font-size: 14px; color: #888;">nghiensale.shopee.cc</div>
     </div>
 
     <div class="container">
@@ -52,8 +52,10 @@
         <div class="instruction">
             <h3>ℹ️ Hướng dẫn</h3>
             <ol>
+                <li>Vào Shopee và tìm sản phẩm bạn muốn mua, chọn mục chia sẻ và <b>Copy Link</b>.</li>
+                <li>Dán link vào tool và bấm <b>Tạo Link Ngay</b>.</li>
                 <li>Sau khi tạo link, nhấn <b>Copy Link</b>.</li>
-                <li>Dán link dưới bài viết hoặc gửi cho khách.</li>
+                <li>Dán link dưới bài viết hoặc gửi cho khách qua Facebook/Zalo.</li>
                 <li>Khách click vào mua bạn sẽ nhận được hoa hồng.</li>
             </ol>
         </div>
@@ -62,7 +64,12 @@
     <div class="footer-note">ID Affiliate: 17346750068 | Hệ thống tự động</div>
 
     <script>
-        const MY_AFF_ID = "17346750068";
+        // Thay bằng ID của bạn nếu cần
+        const MY_AFF_ID = "17346750068"; 
+        
+        // Bạn có thể thêm Sub ID vào đây nếu muốn tracking hiệu quả từng kênh (Ví dụ: "FB_Group_A")
+        // Nếu không dùng, để trống: const SUB_ID = "";
+        const SUB_ID = "NS163----"; 
 
         function generateLink() {
             const input = document.getElementById('originLink').value.trim();
@@ -74,19 +81,31 @@
                 return;
             }
 
-            // Xử lý tạo link Shopee Affiliate
+            // Mã hóa URL gốc để tránh lỗi ký tự đặc biệt
             const encodedUrl = encodeURIComponent(input);
-            const finalLink = `https://s.shopee.vn/an_redir?origin_link=${encodedUrl}&affiliate_id=${MY_AFF_ID}`;
+            
+            // Xây dựng link Affiliate với share_channel_code=4 (Facebook)
+            let finalLink = `https://s.shopee.vn/an_redir?origin_link=${encodedUrl}&share_channel_code=4&affiliate_id=${MY_AFF_ID}`;
+            
+            // Nếu có khai báo SUB_ID, nối thêm vào link
+            if (SUB_ID !== "") {
+                finalLink += `&sub_id=${SUB_ID}`;
+            }
 
+            // Hiển thị kết quả
             affLinkSpan.innerText = finalLink;
             resultBox.style.display = 'block';
+            
+            // Tự động cuộn xuống phần kết quả
             resultBox.scrollIntoView({ behavior: 'smooth' });
         }
 
         function copyLink() {
             const linkText = document.getElementById('aff-link').innerText;
             navigator.clipboard.writeText(linkText).then(() => {
-                alert("Đã copy link thành công!");
+                alert("Đã copy link thành công! Bạn có thể dán lên Facebook ngay bây giờ.");
+            }).catch(err => {
+                alert("Không thể copy tự động, vui lòng bôi đen và copy thủ công.");
             });
         }
     </script>
