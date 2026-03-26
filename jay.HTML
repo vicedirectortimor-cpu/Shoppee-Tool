@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tạo Link Shopee - Nghiện Sale</title>
+    <style>
+        :root { --shopee-orange: #ee4d2d; --bg-pink: #fde9e4; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-pink); margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .header { text-align: center; color: var(--shopee-orange); margin-bottom: 20px; }
+        .header h1 { margin: 0; font-size: 28px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        
+        .container { background: white; width: 100%; max-width: 500px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); padding: 25px; box-sizing: border-box; }
+        
+        .input-group { position: relative; margin-bottom: 20px; }
+        input[type="text"] { width: 100%; padding: 15px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; box-sizing: border-box; outline: none; transition: 0.3s; }
+        input[type="text"]:focus { border-color: var(--shopee-orange); }
+
+        .btn-generate { width: 100%; background: linear-gradient(90deg, #ff6433, #ee4d2d); color: white; border: none; padding: 15px; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+        .btn-generate:hover { opacity: 0.9; transform: translateY(-2px); }
+
+        .instruction { background: #f8f9fa; border-radius: 10px; padding: 15px; margin-top: 20px; border-left: 4px solid #007bff; }
+        .instruction h3 { margin-top: 0; font-size: 16px; color: #333; display: flex; align-items: center; gap: 8px; }
+        .instruction ol { padding-left: 20px; font-size: 14px; color: #555; line-height: 1.6; }
+
+        #result-box { display: none; margin-top: 20px; border: 2px dashed var(--shopee-orange); padding: 15px; border-radius: 8px; background: #fff9f8; text-align: center; }
+        #aff-link { word-break: break-all; color: #333; font-weight: 500; margin-bottom: 15px; display: block; }
+        .btn-copy { background: #26aa99; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        
+        .footer-note { margin-top: 20px; font-size: 12px; color: #888; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>🔗 Tạo Link Shopee</h1>
+        <div style="font-size: 14px; color: #888;">nghiensale.shope.cc</div>
+    </div>
+
+    <div class="container">
+        <div class="input-group">
+            <input type="text" id="originLink" placeholder="Dán link Shopee vào đây...">
+        </div>
+        
+        <button class="btn-generate" onclick="generateLink()">✍️ Tạo Link Ngay</button>
+
+        <div id="result-box">
+            <span id="aff-link"></span>
+            <button class="btn-copy" onclick="copyLink()">📋 Copy Link</button>
+        </div>
+
+        <div class="instruction">
+            <h3>ℹ️ Hướng dẫn</h3>
+            <ol>
+                <li>Sau khi tạo link, nhấn <b>Copy Link</b>.</li>
+                <li>Dán link dưới bài viết hoặc gửi cho khách.</li>
+                <li>Khách click vào mua bạn sẽ nhận được hoa hồng.</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="footer-note">ID Affiliate: 17346750068 | Hệ thống tự động</div>
+
+    <script>
+        const MY_AFF_ID = "17346750068";
+
+        function generateLink() {
+            const input = document.getElementById('originLink').value.trim();
+            const resultBox = document.getElementById('result-box');
+            const affLinkSpan = document.getElementById('aff-link');
+
+            if (!input) {
+                alert("Vui lòng dán link Shopee cần chuyển đổi!");
+                return;
+            }
+
+            // Xử lý tạo link Shopee Affiliate
+            const encodedUrl = encodeURIComponent(input);
+            const finalLink = `https://s.shopee.vn/an_redir?origin_link=${encodedUrl}&affiliate_id=${MY_AFF_ID}`;
+
+            affLinkSpan.innerText = finalLink;
+            resultBox.style.display = 'block';
+            resultBox.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function copyLink() {
+            const linkText = document.getElementById('aff-link').innerText;
+            navigator.clipboard.writeText(linkText).then(() => {
+                alert("Đã copy link thành công!");
+            });
+        }
+    </script>
+</body>
+</html>
